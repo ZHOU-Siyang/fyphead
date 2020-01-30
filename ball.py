@@ -1,5 +1,7 @@
 # import the necessary packages
 from collections import deque
+import pygame
+import sys
 import numpy as np
 import argparse
 import imutils
@@ -89,7 +91,7 @@ class BALL(object):
             # centroid
             c = max(cnts, key=cv2.contourArea)
             ((x, y), radius) = cv2.minEnclosingCircle(c)
-            print(int(x), int(y), int(radius))
+            # print(int(x), int(y), int(radius))
             M = cv2.moments(c)
             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
@@ -149,6 +151,24 @@ class BALL(object):
         cv2.destroyAllWindows()
 
 balls = BALL()
+pygame.init()  # 初始化pygame
+size = width, height = 640, 480  # 设置窗口大小
+screen = pygame.display.set_mode(size)  # 显示窗口
+color = (0, 0, 0)  # 设置颜色
+face=pygame.image.load('/home/siyang/Desktop/face.png')
+white=pygame.image.load('/home/siyang/Desktop/white.png')
+eyeball=pygame.image.load('/home/siyang/Desktop/eyeball.png')
+lid=pygame.image.load('/home/siyang/Desktop/lid.png')
+
+eyeball_lpos=(100,140)
+eyeball_rpos=(420,140)
+lid_lupos=(60,0)
+lid_llpos=(60,300)
+lid_rupos=(380,0)
+lid_rlpos=(380,300)
+
+clock = pygame.time.Clock()  # 设置时钟
+rad0=0
 while(balls.getifkeep()):
     balls.getball()
     xCenter = balls.getballX()
@@ -157,6 +177,42 @@ while(balls.getifkeep()):
     print("(", xCenter, yCenter, ballrad, ")")
     # xSocket.send(str(xCenter).encode('utf-8'))
     # ySocket.send(str(yCenter).encode('utf-8'))
+    clock.tick(40)  # 每秒执行60次
+    for event in pygame.event.get():  # 遍历所有事件
+        if event.type == pygame.QUIT:  # 如果单击关闭窗口，则退出
+            sys.exit()
+    # eyeballpos=(eyeballpos[0]+1, eyeballpos[1])
+
+    screen.fill(color)  # 填充颜色(设置为0，执不执行这行代码都一样)
+    screen.blit(white, (0, 0))
+
+    screen.blit(eyeball, eyeball_lpos)
+    screen.blit(eyeball, eyeball_rpos)
+    if ballrad>rad0 and lid_lupos[1]<100:
+        lid_lupos=(lid_lupos[0], lid_lupos[1]+3)
+        lid_llpos=(lid_llpos[0], lid_llpos[1]-3)
+        lid_rupos = (lid_rupos[0], lid_rupos[1] + 3)
+        lid_rlpos = (lid_rlpos[0], lid_rlpos[1] - 3)
+
+    if ballrad<rad0 and lid_lupos[1]>0:
+        lid_lupos = (lid_lupos[0], lid_lupos[1] - 3)
+        lid_llpos = (lid_llpos[0], lid_llpos[1] + 3)
+        lid_rupos = (lid_rupos[0], lid_rupos[1] - 3)
+        lid_rlpos = (lid_rlpos[0], lid_rlpos[1] + 3)
+
+    eyeball_lpos=((xCenter-320)/320*40+100,(yCenter-240)/240*40+140)
+    eyeball_rpos = ((xCenter - 320) / 320 * 40 + 420, (yCenter - 240) / 240 * 40 + 140)
+
+    screen.blit(lid, lid_lupos)
+    screen.blit(lid, lid_llpos)
+    screen.blit(lid, lid_rupos)
+    screen.blit(lid, lid_rlpos)
+    screen.blit(face, (0, 0))
+
+    pygame.display.flip()  # 更新全部显示
 
     # Terminate process
     time.sleep(0.1)
+    rad0=ballrad
+
+pygame.quit()  # 退出pygame
