@@ -64,10 +64,25 @@ while 1:
         j=j+1
         
     if xCenter == 999:
-        pulseX = 350
+        
         print('Moving servo to original position.')
-        pwm.set_pwm(0, 0, pulseX)
-
+        pwm.set_pwm(0, 0, 350-(350-pulseX)*5/6)
+        print("Moving servo X to", 350-(350-pulseX)*5/6)
+        time.sleep(0.1)
+        pwm.set_pwm(0, 0, 350-(350-pulseX)*4/6)
+        print("Moving servo X to", 350-(350-pulseX)*4/6)
+        time.sleep(0.1)
+        pwm.set_pwm(0, 0, 350-(350-pulseX)*3/6)
+        print("Moving servo X to", 350-(350-pulseX)*3/6)
+        time.sleep(0.1)
+        pwm.set_pwm(0,0,350-(350-pulseX)*2/6)
+        print("Moving servo X to", 350-(350-pulseX)*2/6)
+        time.sleep(0.1)
+        pwm.set_pwm(0,0,350-(350-pulseX)*1/6)
+        print("Moving servo X to", 350-(350-pulseX)*1/6)
+        time.sleep(0.1)
+        pwm.set_pwm(0,0,350)
+        pulseX = 350
 
     elif xCenter > 430:
         pulseXdt = xCenter*8/210 -14
@@ -91,10 +106,24 @@ while 1:
         print("no need to move")
 
     if yCenter == 999:
-        pulseY = 200
         print('Moving servo to original position.')
-        pwm.set_pwm(15, 0, pulseY)
-
+        pwm.set_pwm(15, 0, 200-(200-pulseY)*5/6)
+        print("Moving servo Y to", 200-(200-pulseY)*5/6)
+        time.sleep(0.1)
+        pwm.set_pwm(15, 0, 200-(200-pulseY)*4/6)
+        print("Moving servo Y to", 200-(200-pulseY)*4/6)
+        time.sleep(0.1)
+        pwm.set_pwm(15, 0, 200-(200-pulseY)*3/6)
+        print("Moving servo Y to", 200-(200-pulseY)*3/6)
+        time.sleep(0.1)
+        pwm.set_pwm(15,0,200-(200-pulseY)*2/6)
+        print("Moving servo Y to", 200-(200-pulseY)*2/6)
+        time.sleep(0.1)
+        pwm.set_pwm(15, 0, 200-(200-pulseY)*1/6)
+        print("Moving servo Y to", 200-(200-pulseY)*1/6)
+        time.sleep(0.1)
+        pwm.set_pwm(15,0,200)
+        pulseY = 200
 
     elif yCenter <170:
         pulseYdt = -yCenter*2/170 + 4
