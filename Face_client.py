@@ -69,7 +69,7 @@ while(faces.getCap()):
     # if keyboard.is_pressed('q'):
     #     xSocket.send(str(-1).encode('utf-8'))
     #     break
-    # time.sleep(0.1)
+    time.sleep(0.01)
 
 xSocket.close()
 ySocket.close()
